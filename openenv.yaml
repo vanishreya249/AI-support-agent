@@ -1,0 +1,15 @@
+name: openenv-support-agent
+version: 1.0
+
+environment:
+  entrypoint: app.main:app
+
+tasks:
+  - id: easy
+    description: Classify customer intent
+
+  - id: medium
+    description: Extract order details
+
+  - id: hard
+    description: Full resolution workflow
