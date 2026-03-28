@@ -7,9 +7,7 @@ environment:
 tasks:
   - id: easy
     description: Classify customer intent
-
   - id: medium
     description: Extract order details
-
   - id: hard
     description: Full resolution workflow

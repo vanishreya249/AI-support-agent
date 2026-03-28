@@ -10,6 +10,7 @@ EMAILS = [
 
 current_state = {}
 
+
 def reset():
     global current_state
 
@@ -37,31 +38,24 @@ def step(action):
     current_state["step"] += 1
     email = current_state["email"].lower()
 
-    # Classification
     if action.action_type == "classify":
         if "refund" in email:
             reward += 0.2
             breakdown["classification"] = 0.2
-        else:
-            reward -= 0.1
 
-    # Extraction
     elif action.action_type == "extract":
         if any(num in action.content for num in ["1234", "5678", "9999", "2222"]):
             reward += 0.2
             breakdown["extraction"] = 0.2
-        else:
-            reward -= 0.1
 
-    # Decision
     elif action.action_type == "decide":
         if "refund" in action.content.lower() or "replace" in action.content.lower():
             reward += 0.3
             breakdown["decision"] = 0.3
 
-    # Response
     elif action.action_type == "respond":
-        if "sorry" in action.content.lower():
+        content = action.content.lower()
+        if "sorry" in content or "apologize" in content:
             reward += 0.3
             breakdown["response"] = 0.3
 

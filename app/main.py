@@ -7,6 +7,7 @@ from app.grader import grade
 
 app = FastAPI()
 
+
 @app.get("/")
 def home():
     return {"status": "running"}
