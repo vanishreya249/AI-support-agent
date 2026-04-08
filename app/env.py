@@ -1,5 +1,5 @@
 import random
-from app.models import Observation
+from models import Observation
 
 EMAILS = [
     "Hi, my order #1234 hasn't arrived. I want a refund.",

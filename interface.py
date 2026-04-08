@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app.env import reset, step, state
-from app.models import Action
+from env import reset, step, state
+from models import Action
 
 app = FastAPI()
 

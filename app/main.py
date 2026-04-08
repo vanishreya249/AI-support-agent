@@ -1,43 +1,42 @@
 from fastapi import FastAPI
-from app.baseline import run_baseline
-from app.env import reset, step, state
-from app.models import Action
-from app.tasks import tasks
-from app.grader import grade
+import requests
+import os
 
 app = FastAPI()
 
+HF_TOKEN = os.getenv("HF_TOKEN")
+
+API_URL = "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2"
+
+headers = {
+    "Authorization": f"Bearer {HF_TOKEN}"
+}
 
 @app.get("/")
 def home():
-    return {"status": "running"}
-
-
-@app.post("/reset")
-def reset_env():
-    return reset()
-
+    return {"message": "AI Support Agent Running 🚀"}
 
 @app.post("/step")
-def step_env(action: Action):
-    return step(action)
+def step(data: dict):
+    action_type = data.get("action_type")
+    content = data.get("content")
 
+    if action_type != "query":
+        return {"error": "Invalid action_type"}
 
-@app.get("/state")
-def get_state():
-    return state()
+    try:
+        payload = {
+            "inputs": content
+        }
 
+        response = requests.post(API_URL, headers=headers, json=payload)
 
-@app.get("/tasks")
-def get_tasks():
-    return tasks
+        result = response.json()
 
+        if isinstance(result, list):
+            return {"response": result[0].get("generated_text", "No response")}
+        else:
+            return {"response": result}
 
-@app.post("/grader")
-def run_grader(task_id: str, output: str):
-    return {"score": grade(task_id, output)}
-
-
-@app.get("/baseline")
-def baseline():
-    return run_baseline()
+    except Exception as e:
+        return {"error": str(e)}

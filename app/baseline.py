@@ -1,5 +1,5 @@
 import requests
-from app.ai_agent import generate_agent_output
+from ai_agent import generate_agent_output
 
 BASE_URL = "http://127.0.0.1:8000"
 
